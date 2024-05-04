@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_pfe/inscription1.dart';
 import 'gerer_reserv.dart';
 import 'reservation_e.dart';
 
@@ -90,7 +91,9 @@ class Reservationhome extends StatelessWidget {
               color: Colors.blue,
               textColor: Colors.white,
               onPressed: () {
-                // Navigator.of(context).push(   );
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const Inscription1(),
+                ));
               },
               child: const Text("Déconnection"),
             ),

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 class EtrangerPage extends StatelessWidget {
   const EtrangerPage({Key? key});
 
+  BuildContext get context => context;
   Future<List<dynamic>> fetchEtrangerData() async {
     final response = await http.get(
       Uri.parse('http://192.168.1.17:8000/api/admin/getAllEtr/'),
@@ -17,6 +18,48 @@ class EtrangerPage extends StatelessWidget {
       return jsonDecode(response.body)['etranger'];
     } else {
       throw Exception('Failed to load Etranger data');
+    }
+  }
+
+  Future<void> deleteEtranger(String id) async {
+    final response = await http.delete(
+      Uri.parse('http://192.168.1.17:8000/api/admin/deleteEtr/$id/'),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Success'),
+          content: Text(responseData['message']),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                fetchEtrangerData(); // Rafraîchir la liste des étrangers après suppression
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to delete etranger.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -51,6 +94,10 @@ class EtrangerPage extends StatelessWidget {
                   return ListTile(
                     title: Text(etranger['id']),
                     subtitle: Text(etranger['nom']),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => deleteEtranger(etranger['id']),
+                    ),
                     // Ajoutez d'autres champs selon votre modèle Etranger
                   );
                 },

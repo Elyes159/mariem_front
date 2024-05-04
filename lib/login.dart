@@ -51,9 +51,27 @@ class _LoginState extends State<Login> {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Homepage(),
         ));
-      } else {
-        print('Erreur: ${resp.statusCode}');
+      } else if (resp.statusCode == 400 || resp.statusCode == 401) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur'),
+              content:
+                  Text('Identifiants ou mdp incorrects. Veuillez réessayer.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
+
       print(resp.statusCode);
       return resp.statusCode;
     } catch (e) {
