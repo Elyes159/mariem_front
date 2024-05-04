@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'inscriptionstagiaire.dart';
 
 class Inscription1 extends StatefulWidget {
-  const Inscription1({super.key});
+  const Inscription1({Key? key});
 
   @override
   _Inscription1State createState() => _Inscription1State();
@@ -18,9 +18,9 @@ class Inscription1 extends StatefulWidget {
 
 class _Inscription1State extends State<Inscription1> {
   String? type;
-  final TextEditingController _controllerCode =
-      TextEditingController(); // Ajout du contrôleur de texte
+  final TextEditingController _controllerCode = TextEditingController();
   String errorMessage = '';
+
   Future<void> saveIdToSharedPreferences(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('id', id);
@@ -37,9 +37,6 @@ class _Inscription1State extends State<Inscription1> {
         body: jsonEncode({"id": _controllerCode.text}),
       );
       if (resp.statusCode == 200) {
-        print('Données envoyées avec succès');
-        print("eeeeeee : ${resp.body}");
-
         final controllerCodeProvider =
             Provider.of<ControllerCodeProvider>(context, listen: false);
         controllerCodeProvider.setCode(_controllerCode.text);
@@ -52,11 +49,10 @@ class _Inscription1State extends State<Inscription1> {
       } else {
         print('Erreur: ${resp.statusCode}');
       }
-      print(resp.statusCode);
       return resp.statusCode;
     } catch (e) {
       print('Erreur: $e');
-      return null; // Retourner null en cas d'erreur
+      return null;
     }
   }
 
@@ -148,12 +144,11 @@ class _Inscription1State extends State<Inscription1> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              _controllerCode
-                                  .clear(); // Efface le texte du champ de texte
+                              _controllerCode.clear();
                               setState(() {
                                 errorMessage = '';
                               });
-                              Navigator.of(context).pop(); // Annuler l'action
+                              Navigator.of(context).pop();
                             },
                             child: const Text('Annuler'),
                           ),

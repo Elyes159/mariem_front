@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_pfe/admin/admin_main.dart';
 import 'package:projet_pfe/admin/create_stagiaire.dart';
 
 class AdminLoginPage extends StatefulWidget {
@@ -77,7 +78,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => StagiairePage(),
+                      builder: (context) => AdminCustomPage(),
                     ));
                   },
                   child: Text('Login'),

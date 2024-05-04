@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +30,7 @@ class _ForgorPassState extends State<ForgorPass> {
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
-      body: body, 
+      body: body,
     );
 
     if (response.statusCode == 200) {
@@ -47,24 +46,44 @@ class _ForgorPassState extends State<ForgorPass> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Example App'),
+        title: Text('Mot de passe oublié'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                hintText: 'Enter your email',
-              ),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.blue, Colors.green],
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _sendGetRequest,
-              child: Text('Send GET Request'),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Entrez votre email',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _sendGetRequest,
+                  child: Text('Envoyer la demande'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -58,113 +58,126 @@ class Homepage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            height: 60,
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(500),
-            ),
-            margin:
-                const EdgeInsets.only(right: 20, left: 20, top: 50, bottom: 20),
-            child: MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pushNamed("profil");
-              },
-              child: const Text("Consulter profil"),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.blue, Colors.green],
             ),
           ),
-          Container(
-            height: 60,
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(500),
-            ),
-            margin:
-                const EdgeInsets.only(right: 20, left: 20, top: 50, bottom: 20),
-            child: MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Evaluation(),
-                ));
-              },
-              child: const Text("Suivi les évaluations"),
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 60,
+                width: 400,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                ),
+                margin: const EdgeInsets.only(
+                    right: 20, left: 20, top: 50, bottom: 20),
+                child: MaterialButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("profil");
+                  },
+                  child: const Text("Consulter profil"),
+                ),
+              ),
+              Container(
+                height: 60,
+                width: 400,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                ),
+                margin: const EdgeInsets.only(
+                    right: 20, left: 20, top: 50, bottom: 20),
+                child: MaterialButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Evaluation(),
+                    ));
+                  },
+                  child: const Text("Suivi les évaluations"),
+                ),
+              ),
+              Container(
+                height: 60,
+                width: 400,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                ),
+                margin: const EdgeInsets.only(
+                    right: 20, left: 20, top: 50, bottom: 20),
+                child: MaterialButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Emploi(),
+                    ));
+                  },
+                  child: const Text("Mon emploi"),
+                ),
+              ),
+              Container(
+                height: 60,
+                width: 400,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                ),
+                margin: const EdgeInsets.only(
+                    right: 20, left: 20, top: 50, bottom: 20),
+                child: MaterialButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Absence(),
+                    ));
+                  },
+                  child: const Text("Suivi les absences"),
+                ),
+              ),
+              Container(
+                height: 60,
+                width: 400,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                ),
+                margin: const EdgeInsets.only(
+                    right: 20, left: 20, top: 50, bottom: 20),
+                child: MaterialButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Reservation(),
+                    ));
+                  },
+                  child: const Text("Reservation au restaurant"),
+                ),
+              ),
+              MaterialButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                onPressed: () {
+                  logout(context);
+                },
+                child: const Text(
+                  "Déconnexion",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
           ),
-          Container(
-            height: 60,
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(500),
-            ),
-            margin:
-                const EdgeInsets.only(right: 20, left: 20, top: 50, bottom: 20),
-            child: MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Emploi(),
-                ));
-              },
-              child: const Text("Mon emploi"),
-            ),
-          ),
-          Container(
-            height: 60,
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(500),
-            ),
-            margin:
-                const EdgeInsets.only(right: 20, left: 20, top: 50, bottom: 20),
-            child: MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Absence(),
-                ));
-              },
-              child: const Text("Suivi les absences"),
-            ),
-          ),
-          Container(
-            height: 60,
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(500),
-            ),
-            margin:
-                const EdgeInsets.only(right: 20, left: 20, top: 50, bottom: 20),
-            child: MaterialButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Reservation(),
-                ));
-              },
-              child: const Text("Reservation au restaurant"),
-            ),
-          ),
-          MaterialButton(
-            color: Colors.blue,
-            textColor: Colors.white,
-            onPressed: () {
-              logout(context);
-            },
-            child: const Text(
-              "Déconnexion",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
