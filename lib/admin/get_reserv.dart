@@ -49,12 +49,19 @@ class _GetReservationPageState extends State<GetReservationPage> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: reservationsEtranger.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Temps: ${reservationsEtranger[index]['temps']}'),
-                subtitle: Text(
-                    'Étranger: ${reservationsEtranger[index]['etranger']}'),
-                trailing: Text(
-                    'Nombre de personnes: ${reservationsEtranger[index]['nombre_personne']}'),
+              return Column(
+                children: [
+                  Text(
+                      "nombre de reservation : ${reservationsEtranger.length}"),
+                  ListTile(
+                    title:
+                        Text('Temps: ${reservationsEtranger[index]['temps']}'),
+                    subtitle: Text(
+                        'Étranger: ${reservationsEtranger[index]['etranger_id']}'),
+                    trailing: Text(
+                        'Nombre de personnes: ${reservationsEtranger[index]['nombre_personne']}'),
+                  ),
+                ],
               );
             },
           ),
@@ -66,18 +73,27 @@ class _GetReservationPageState extends State<GetReservationPage> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: reservationsStagiaire.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Temps: ${reservationsStagiaire[index]['temps']}'),
-                subtitle: Column(
-                  children: [
-                    Text(
-                        'Stagiaire: ${reservationsStagiaire[index]['stagiaire_id']}'),
-                    Text(
-                        'petit_dej: ${reservationsStagiaire[index]['petit_dej']}'),
-                    Text(
-                        'repas_midi: ${reservationsStagiaire[index]['repas_midi']}')
-                  ],
-                ),
+              return Column(
+                children: [
+                  Text(
+                      "nombre de reservation : ${reservationsStagiaire.length}"),
+                  ListTile(
+                    title:
+                        Text('Temps: ${reservationsStagiaire[index]['temps']}'),
+                    subtitle: Column(
+                      children: [
+                        Text(
+                            'Stagiaire: ${reservationsStagiaire[index]['stagiaire_id']}'),
+                        Text(reservationsStagiaire[index]['petit_dej'] == true
+                            ? 'petit_dej: ${reservationsStagiaire[index]['petit_dej']}'
+                            : ''),
+                        Text(reservationsStagiaire[index]['repas_midi'] == true
+                            ? 'repas_midi: ${reservationsStagiaire[index]['repas_midi']}'
+                            : '')
+                      ],
+                    ),
+                  ),
+                ],
               );
             },
           ),

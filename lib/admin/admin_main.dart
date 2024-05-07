@@ -4,6 +4,7 @@ import 'package:projet_pfe/admin/create_stagiaire.dart';
 import 'package:projet_pfe/admin/get_etranger.dart';
 import 'package:projet_pfe/admin/get_reserv.dart';
 import 'package:projet_pfe/admin/get_stagiaire.dart';
+import 'package:projet_pfe/login.dart';
 import 'package:projet_pfe/reservation_home.dart';
 import 'package:projet_pfe/inscription1.dart';
 
@@ -78,6 +79,17 @@ class AdminCustomPage extends StatelessWidget {
                         );
                       },
                       child: const Text('Voir tout les réservation'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => Login(),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                      child: const Text('Déconnexion'),
                     ),
                   ],
                 ),

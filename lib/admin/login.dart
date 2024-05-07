@@ -77,9 +77,14 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AdminCustomPage(),
-                    ));
+                    if ((emailController.text == "admin") &&
+                        (passwordController.text == "admin")) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AdminCustomPage(),
+                      ));
+                    } else {
+                      print("no");
+                    }
                   },
                   child: Text('Login'),
                 ),

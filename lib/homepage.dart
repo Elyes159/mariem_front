@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projet_pfe/login.dart';
+import 'package:projet_pfe/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:projet_pfe/absence.dart';
 import 'package:projet_pfe/emploi.dart';
@@ -83,7 +84,9 @@ class Homepage extends StatelessWidget {
                   color: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () {
-                    Navigator.of(context).pushNamed("profil");
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Profil(),
+                    ));
                   },
                   child: const Text("Consulter profil"),
                 ),
