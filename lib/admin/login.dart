@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:projet_pfe/admin/admin_main.dart';
 import 'package:projet_pfe/admin/create_stagiaire.dart';
+import 'package:http/http.dart' as http;
 
 class AdminLoginPage extends StatefulWidget {
   @override
@@ -15,6 +18,31 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     // Ajoutez votre logique de connexion ici
     String email = emailController.text;
     String password = passwordController.text;
+  }
+
+  Future<int> _loginSousAdmin() async {
+    final String url = 'http://192.168.1.17:8000/api/LoginSAdmin/';
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: json.encode({
+        'identifiant': emailController.text,
+        'password': passwordController.text,
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Succès
+      print('Succès: ${response.body}');
+    } else {
+      // Erreur
+      print('Erreur: ${response.reasonPhrase}');
+    }
+
+    return response.statusCode; // Retourne le code d'état de la réponse HTTP
   }
 
   @override
@@ -76,13 +104,14 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    int statusCode = await _loginSousAdmin();
                     if ((emailController.text == "admin") &&
                         (passwordController.text == "admin")) {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => AdminCustomPage(),
                       ));
-                    } else {
+                    } else if (statusCode == 200) {
                       print("no");
                     }
                   },

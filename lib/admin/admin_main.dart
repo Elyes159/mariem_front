@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projet_pfe/admin/ajout_etranger.dart';
 import 'package:projet_pfe/admin/create_stagiaire.dart';
+import 'package:projet_pfe/admin/creer_admin.dart';
 import 'package:projet_pfe/admin/get_etranger.dart';
 import 'package:projet_pfe/admin/get_reserv.dart';
 import 'package:projet_pfe/admin/get_stagiaire.dart';
@@ -79,6 +80,16 @@ class AdminCustomPage extends StatelessWidget {
                         );
                       },
                       child: const Text('Voir tout les réservation'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CreerSousAdminPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('creer des autres admin'),
                     ),
                     ElevatedButton(
                       onPressed: () {
