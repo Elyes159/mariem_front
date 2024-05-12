@@ -39,6 +39,25 @@ class _Inscription2State extends State<Inscription2> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const Login()),
         );
+      } else if (response.statusCode == 470) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur'),
+              content:
+                  Text('Identifiants ou mdp incorrects. Veuillez réessayer.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       } else {
         setState(() {
           errorMessage = 'Erreur: ${response.statusCode}';
@@ -167,7 +186,28 @@ class _Inscription2State extends State<Inscription2> {
                 color: Colors.blue,
                 textColor: Colors.white,
                 onPressed: () {
-                  createAccount();
+                  if (passwordController1.text != passwordController2.text) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Erreur'),
+                          content:
+                              Text('les 2 mot de passe ne sont pas kifkif.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    createAccount();
+                  }
                 },
                 child: const Text("Créer un compte"),
               ),

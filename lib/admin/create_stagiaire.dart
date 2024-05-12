@@ -33,7 +33,7 @@ class _StagiairePageState extends State<StagiairePage> {
         'lieu_naissance': lieuNaissanceController.text,
         'gouv': gouvController.text,
         'code_postal': codePostalController.text,
-        'code_qr': codeQRController.text,
+        'code_group': codeQRController.text,
         'email': emailController.text,
       },
     );
@@ -140,7 +140,7 @@ class _StagiairePageState extends State<StagiairePage> {
                 ),
                 TextField(
                   controller: codeQRController,
-                  decoration: InputDecoration(labelText: 'Code QR'),
+                  decoration: InputDecoration(labelText: 'Code groupe'),
                 ),
                 TextField(
                   controller: emailController,

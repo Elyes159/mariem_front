@@ -32,7 +32,6 @@ class _ProfilState extends State<Profil> {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
-      print("HEEEEEEEEEEEEEEEEEEEEEY  ${_profileData['photo']}");
       setState(() {
         _profileData = json.decode(response.body);
       });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_pfe/demande.dart';
 import 'package:projet_pfe/login.dart';
 import 'package:projet_pfe/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,7 +99,7 @@ class Homepage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(500),
                 ),
                 margin: const EdgeInsets.only(
-                    right: 20, left: 20, top: 50, bottom: 20),
+                    right: 20, left: 20, top: 20, bottom: 20),
                 child: MaterialButton(
                   color: Colors.blue,
                   textColor: Colors.white,
@@ -117,7 +118,7 @@ class Homepage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(500),
                 ),
                 margin: const EdgeInsets.only(
-                    right: 20, left: 20, top: 50, bottom: 20),
+                    right: 20, left: 20, top: 20, bottom: 20),
                 child: MaterialButton(
                   color: Colors.blue,
                   textColor: Colors.white,
@@ -142,7 +143,26 @@ class Homepage extends StatelessWidget {
                   textColor: Colors.white,
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Absence(),
+                      builder: (context) => DemandeForm(),
+                    ));
+                  },
+                  child: const Text("demande"),
+                ),
+              ),
+              Container(
+                height: 60,
+                width: 400,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                ),
+                margin: const EdgeInsets.only(
+                    right: 20, left: 20, top: 50, bottom: 20),
+                child: MaterialButton(
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Absence(),
                     ));
                   },
                   child: const Text("Suivi les absences"),

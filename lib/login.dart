@@ -70,6 +70,25 @@ class _LoginState extends State<Login> {
             );
           },
         );
+      } else if (resp.statusCode == 470) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur'),
+              content: Text(
+                  'votre compte existe dans la bdd de l\'admin , creer un.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
 
       print(resp.statusCode);
@@ -115,6 +134,7 @@ class _LoginState extends State<Login> {
                   controller: cin,
                   keyboardType: TextInputType.number,
                   enabled: true,
+                  maxLength: 8,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     focusedBorder: OutlineInputBorder(

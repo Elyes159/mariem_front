@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:projet_pfe/admin/admin_main.dart';
 import 'package:projet_pfe/admin/create_stagiaire.dart';
 import 'package:http/http.dart' as http;
+import 'package:projet_pfe/admin/sous-admin/admin_main.dart';
 
 class AdminLoginPage extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   }
 
   Future<int> _loginSousAdmin() async {
-    final String url = 'http://192.168.1.17:8000/api/LoginSAdmin/';
+    const String url = 'http://192.168.1.17:8000/api/LoginSAdmin/';
 
     final response = await http.post(
       Uri.parse(url),
@@ -112,7 +113,27 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         builder: (context) => AdminCustomPage(),
                       ));
                     } else if (statusCode == 200) {
-                      print("no");
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SousAdminMain(),
+                      ));
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Erreur'),
+                            content: Text('quelque chose incorrecte.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   child: Text('Login'),

@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:projet_pfe/admin/ajout_etranger.dart';
-import 'package:projet_pfe/admin/create_abscence.dart';
 import 'package:projet_pfe/admin/create_stagiaire.dart';
 import 'package:projet_pfe/admin/creer_admin.dart';
-import 'package:projet_pfe/admin/creer_emploi.dart';
 import 'package:projet_pfe/admin/get_etranger.dart';
 import 'package:projet_pfe/admin/get_reserv.dart';
 import 'package:projet_pfe/admin/get_stagiaire.dart';
-import 'package:projet_pfe/admin/getdemande.dart';
 import 'package:projet_pfe/login.dart';
 import 'package:projet_pfe/reservation_home.dart';
 import 'package:projet_pfe/inscription1.dart';
 
-class AdminCustomPage extends StatelessWidget {
-  const AdminCustomPage({Key? key});
+class SousAdminMain extends StatelessWidget {
+  const SousAdminMain({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -86,16 +83,6 @@ class AdminCustomPage extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => CreerSousAdminPage(),
-                          ),
-                        );
-                      },
-                      child: const Text('creer des autres admin'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => Login(),
@@ -104,39 +91,6 @@ class AdminCustomPage extends StatelessWidget {
                         );
                       },
                       child: const Text('Déconnexion'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => UploadImagePage(),
-                          ),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      child: const Text('creer un emploi'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => DemandesPage(),
-                          ),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      child: const Text('Voir les demandes'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                            builder: (context) => CreateAbsencePage(),
-                          ),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      child: const Text('creer une abscence '),
                     ),
                   ],
                 ),
