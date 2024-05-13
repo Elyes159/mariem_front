@@ -61,6 +61,42 @@ class _ReservationState extends State<Reservation> {
     }
   }
 
+  Future<void> deleteReservation() async {
+    final token = await getSharedPreferencesToken();
+    final url =
+        Uri.parse('http://192.168.1.17:8000/api/deleteReservation/$token/');
+
+    final response = await http.delete(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        // Ajoutez d'autres en-têtes si nécessaire (par exemple, le jeton d'authentification)
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Réservation supprimée avec succès
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Réservation supprimée avec succès',
+              style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      // Gérer les erreurs (par exemple, afficher un message d'erreur)
+      print(
+          'Erreur lors de la suppression de la réservation: ${response.body}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la suppression de la réservation',
+              style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -227,6 +263,13 @@ class _ReservationState extends State<Reservation> {
                   );
                 },
                 icon: Icon(Icons.check, color: Colors.white),
+              ),
+              IconButton(
+                onPressed: () {
+                  // Appeler la fonction de suppression de la réservation
+                  deleteReservation();
+                },
+                icon: Icon(Icons.delete, color: Colors.white),
               ),
             ],
           ),

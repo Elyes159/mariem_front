@@ -20,10 +20,31 @@ class _GetReservationPageState extends State<GetReservationPage> {
       setState(() {
         reservationsEtranger = data['reservations_etranger'];
         reservationsStagiaire = data['reservations_stagiaire'];
-        print(reservationsStagiaire);
       });
     } else {
       throw Exception('Failed to load reservations');
+    }
+  }
+
+  Future<void> deleteReservationEtranger(int id) async {
+    final response = await http.delete(Uri.parse(
+        'http://192.168.1.17:8000/api/admin/deleteReservationEtranger/$id/'));
+
+    if (response.statusCode == 200) {
+      fetchReservations(); // Re-fetch reservations after deletion
+    } else {
+      throw Exception('Failed to delete reservation');
+    }
+  }
+
+  Future<void> deleteReservationStagiaire(int id) async {
+    final response = await http.delete(Uri.parse(
+        'http://192.168.1.17:8000/api/admin/deleteReservationStagiaire/$id/'));
+
+    if (response.statusCode == 200) {
+      fetchReservations(); // Re-fetch reservations after deletion
+    } else {
+      throw Exception('Failed to delete reservation');
     }
   }
 
@@ -51,15 +72,18 @@ class _GetReservationPageState extends State<GetReservationPage> {
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  Text(
-                      "nombre de reservation : ${reservationsEtranger.length}"),
                   ListTile(
                     title:
                         Text('Temps: ${reservationsEtranger[index]['temps']}'),
                     subtitle: Text(
                         'Étranger: ${reservationsEtranger[index]['etranger_id']}'),
-                    trailing: Text(
-                        'Nombre de personnes: ${reservationsEtranger[index]['nombre_personne']}'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        deleteReservationEtranger(
+                            reservationsEtranger[index]['id']);
+                      },
+                    ),
                   ),
                 ],
               );
@@ -75,22 +99,28 @@ class _GetReservationPageState extends State<GetReservationPage> {
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  Text(
-                      "nombre de reservation : ${reservationsStagiaire.length}"),
                   ListTile(
                     title:
                         Text('Temps: ${reservationsStagiaire[index]['temps']}'),
                     subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                             'Stagiaire: ${reservationsStagiaire[index]['stagiaire_id']}'),
                         Text(reservationsStagiaire[index]['petit_dej'] == true
-                            ? 'petit_dej: ${reservationsStagiaire[index]['petit_dej']}'
+                            ? 'petit_dej: Oui'
                             : ''),
                         Text(reservationsStagiaire[index]['repas_midi'] == true
-                            ? 'repas_midi: ${reservationsStagiaire[index]['repas_midi']}'
-                            : '')
+                            ? 'repas_midi: Oui'
+                            : ''),
                       ],
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        deleteReservationStagiaire(
+                            reservationsStagiaire[index]['id']);
+                      },
                     ),
                   ),
                 ],

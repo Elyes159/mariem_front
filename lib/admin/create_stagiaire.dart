@@ -21,6 +21,22 @@ class _StagiairePageState extends State<StagiairePage> {
   final TextEditingController codeQRController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
+  String? _selectedNumgr;
+
+  List<String> _numgrs = [];
+  Future<void> _fetchNumgrs() async {
+    final response = await http
+        .get(Uri.parse('http://192.168.1.17:8000/api/admin/getAllNumgr/'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        _numgrs = List<String>.from(data['numgrs']);
+      });
+    } else {
+      print('Failed to fetch numgrs');
+    }
+  }
+
   Future<void> createOrUpdateStagiaire() async {
     final response = await http.post(
       Uri.parse('http://192.168.1.17:8000/api/admin/create_stagiaire/'),
@@ -33,7 +49,7 @@ class _StagiairePageState extends State<StagiairePage> {
         'lieu_naissance': lieuNaissanceController.text,
         'gouv': gouvController.text,
         'code_postal': codePostalController.text,
-        'code_group': codeQRController.text,
+        'code_group': _selectedNumgr!,
         'email': emailController.text,
       },
     );
@@ -72,6 +88,12 @@ class _StagiairePageState extends State<StagiairePage> {
         ),
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNumgrs();
   }
 
   @override
@@ -138,9 +160,20 @@ class _StagiairePageState extends State<StagiairePage> {
                   controller: codePostalController,
                   decoration: InputDecoration(labelText: 'Code postal'),
                 ),
-                TextField(
-                  controller: codeQRController,
-                  decoration: InputDecoration(labelText: 'Code groupe'),
+                DropdownButton<String>(
+                  value: _selectedNumgr,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedNumgr = newValue;
+                    });
+                  },
+                  items: _numgrs.map((numgr) {
+                    return DropdownMenuItem<String>(
+                      value: numgr,
+                      child: Text(numgr),
+                    );
+                  }).toList(),
+                  hint: Text('Sélectionner un groupe'),
                 ),
                 TextField(
                   controller: emailController,

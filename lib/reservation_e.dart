@@ -82,6 +82,12 @@ class _ReservationEState extends State<ReservationE> {
 
       if (response.statusCode == 200) {
         print('DELETE request successful');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('delted succesfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
       } else {
         print('Failed to delete last reservation: ${response.statusCode}');
       }

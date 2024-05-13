@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:projet_pfe/admin/update_stag.dart';
+
 class GetAllStg extends StatefulWidget {
   @override
   _GetAllStgState createState() => _GetAllStgState();
@@ -99,11 +101,44 @@ class _GetAllStgState extends State<GetAllStg> {
         itemBuilder: (context, index) {
           final stagiaire = stagiaires[index];
           return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: () {
+                try {
+                  if (stagiaire['image'] != null) {
+                    return MemoryImage(base64Decode(stagiaire['image']));
+                  }
+                } catch (e) {
+                  print('Erreur de décodage base64: $e');
+                }
+                // Si le décodage échoue ou si l'image est null, afficher une image par défaut
+                return AssetImage('assets/placeholder_image.png')
+                    as ImageProvider;
+              }(),
+              radius: 25, // Ajustez selon vos besoins
+            ),
             title: Text(stagiaire['prenom'] + ' ' + stagiaire['nom']),
             subtitle: Text(stagiaire['email']),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => deleteStagiaire(stagiaire['cin']),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    // Naviguer vers l'écran de mise à jour avec le cin du stagiaire
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            UpdateStagiaire(cin: stagiaire['cin']),
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => deleteStagiaire(stagiaire['cin']),
+                ),
+              ],
             ),
           );
         },

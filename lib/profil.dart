@@ -42,79 +42,57 @@ class _ProfilState extends State<Profil> {
     }
   }
 
-  Future<void> _takePhoto() async {
-    try {
-      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+  Future<void> _getImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
       setState(() {
-        if (image != null) {
-          _image = File(image.path);
-        }
+        _image = File(image.path);
       });
-    } catch (e) {
-      print('Error taking photo: $e');
     }
   }
 
-  Future<void> _uploadPhoto() async {
+  Future<void> _uploadImage() async {
+    final String? token = await getSharedPreferencesToken();
+    // Check if _image is not null before using it
     if (_image == null) {
-      print('Aucune photo sélectionnée');
+      print('Aucune image sélectionnée');
       return;
     }
-
-    final token = await getSharedPreferencesToken();
-    final String apiUrl = 'http://192.168.1.17:8000/api/ajouter-photo/$token/';
-
-    // Lecture du contenu de l'image sous forme de bytes
-    List<int> imageBytes = await _image!.readAsBytes();
-
-    // Convertir les octets de l'image en base64
-    String base64Image = base64Encode(imageBytes);
-
-    try {
-      var response = await http.post(
-        Uri.parse(apiUrl),
-        body: {
-          'photo': base64Image
-        }, // Inclure la clé 'photo' avec les octets de l'image encodés en base64
-        // headers: {
-        //   'Content-Type':
-        //       'application/json', // Spécifier le type de contenu comme JSON
-        // },
-      );
-
-      if (response.statusCode == 200) {
-        print('Photo téléchargée avec succès');
-        // Mettre à jour l'affichage ou effectuer d'autres actions en fonction de la réponse
-      } else {
-        print('Échec du téléchargement de la photo: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Erreur lors de l\'envoi de la demande: $e');
+    var uri = Uri.parse('http://192.168.1.17:8000/api/ajouter-photo/$token/');
+    var request = http.MultipartRequest('POST', uri);
+    request.files.add(await http.MultipartFile.fromPath('photo', _image!.path));
+    var response = await request.send();
+    if (response.statusCode == 201) {
+      print('Image upload successful');
+    } else {
+      print('Image upload failed with status ${response.statusCode}');
     }
   }
 
   Widget _buildProfileImage() {
     if (_profileData.containsKey('photo')) {
-      print("mriigl");
-      print("houni  ${_profileData['photo']}");
       String? base64Image = _profileData['photo'];
       if (base64Image != null) {
-        print("mriigl houni");
         Uint8List bytes = base64Decode(base64Image);
-        print(bytes);
-        return Image.memory(
-          bytes,
-          width: 100,
-          height: 100,
-          fit: BoxFit.cover,
+        return ClipOval(
+          child: Image.memory(
+            bytes,
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
+          ),
         );
       }
     }
 
-    return Icon(
-      Icons.person,
-      size: 50,
-      color: Colors.grey[700],
+    return CircleAvatar(
+      child: Icon(
+        Icons.person,
+        size: 50,
+        color: Colors.grey[700],
+      ),
+      radius: 50, // Ajustez le rayon selon vos préférences
+      backgroundColor: Colors.grey[300], // Couleur de fond du cercle
     );
   }
 
@@ -137,12 +115,12 @@ class _ProfilState extends State<Profil> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               GestureDetector(
-                onTap: _takePhoto,
+                onTap: _getImage,
                 child: Container(
                   width: 100,
-                  height: 100,
+                  height: 300,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(100),
                     color: Colors.grey[200],
                   ),
                   child: _buildProfileImage(),
@@ -153,13 +131,18 @@ class _ProfilState extends State<Profil> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: _profileData.entries.map((entry) {
-                        return ListTile(
-                          title: Text(
-                            entry.key,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(entry.value.toString()),
-                        );
+                        // Vérifier si la clé n'est pas égale à "photo"
+                        if (entry.key != "photo") {
+                          return ListTile(
+                            title: Text(
+                              entry.key,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(entry.value.toString()),
+                          );
+                        } else {
+                          return SizedBox.shrink(); // Ne pas afficher la photo
+                        }
                       }).toList(),
                     )
                   : Center(
@@ -167,7 +150,7 @@ class _ProfilState extends State<Profil> {
                     ),
               MaterialButton(
                 child: Text("Télécharger votre photo"),
-                onPressed: _uploadPhoto,
+                onPressed: _uploadImage,
               ),
             ],
           ),

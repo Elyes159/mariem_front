@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,9 +10,29 @@ class UploadImagePage extends StatefulWidget {
 }
 
 class _UploadImagePageState extends State<UploadImagePage> {
-  // Initialize _image as null to avoid potential errors
-  File? _image = null;
+  File? _image;
   TextEditingController _groupController = TextEditingController();
+  List<String> _numgrs = [];
+  String? _selectedNumgr;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNumgrs();
+  }
+
+  Future<void> _fetchNumgrs() async {
+    final response = await http
+        .get(Uri.parse('http://192.168.1.17:8000/api/admin/getAllNumgr/'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        _numgrs = List<String>.from(data['numgrs']);
+      });
+    } else {
+      print('Failed to fetch numgrs');
+    }
+  }
 
   Future<void> _getImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -23,22 +44,21 @@ class _UploadImagePageState extends State<UploadImagePage> {
   }
 
   Future<void> _uploadImage() async {
-    // Check if _image is not null before using it
-    if (_image == null) {
-      print('Aucune image sélectionnée');
+    if (_image == null || _selectedNumgr == null) {
+      print('Veuillez sélectionner une image et un groupe');
       return;
     }
 
     var uri = Uri.parse('http://192.168.1.17:8000/api/admin/createEmp/');
     var request = http.MultipartRequest('POST', uri);
-    request.fields['group_id'] = _groupController.text;
+    request.fields['group_id'] = _selectedNumgr!;
     request.files.add(await http.MultipartFile.fromPath('photo', _image!.path));
 
     var response = await request.send();
     if (response.statusCode == 201) {
-      print('Image upload successful');
+      print('Image uploaded successfully');
     } else {
-      print('Image upload failed with status ${response.statusCode}');
+      print('Failed to upload image with status ${response.statusCode}');
     }
   }
 
@@ -52,7 +72,6 @@ class _UploadImagePageState extends State<UploadImagePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Use conditional rendering for safety
             _image == null
                 ? Text('Aucune image sélectionnée')
                 : Image.file(_image!),
@@ -62,12 +81,20 @@ class _UploadImagePageState extends State<UploadImagePage> {
               child: Text('Sélectionner une image'),
             ),
             SizedBox(height: 10),
-            TextField(
-              controller: _groupController,
-              decoration: InputDecoration(
-                labelText: 'ID du groupe',
-                border: OutlineInputBorder(),
-              ),
+            DropdownButton<String>(
+              value: _selectedNumgr,
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedNumgr = newValue;
+                });
+              },
+              items: _numgrs.map((numgr) {
+                return DropdownMenuItem<String>(
+                  value: numgr,
+                  child: Text(numgr),
+                );
+              }).toList(),
+              hint: Text('Sélectionner un groupe'),
             ),
             SizedBox(height: 10),
             ElevatedButton(

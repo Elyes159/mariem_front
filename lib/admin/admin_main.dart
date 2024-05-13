@@ -4,6 +4,11 @@ import 'package:projet_pfe/admin/create_abscence.dart';
 import 'package:projet_pfe/admin/create_stagiaire.dart';
 import 'package:projet_pfe/admin/creer_admin.dart';
 import 'package:projet_pfe/admin/creer_emploi.dart';
+import 'package:projet_pfe/admin/gerer_eval.dart';
+import 'package:projet_pfe/admin/gerer_groups.dart';
+import 'package:projet_pfe/admin/gerer_matiere.dart';
+import 'package:projet_pfe/admin/gerer_sous_admin.dart';
+import 'package:projet_pfe/admin/gerer_spec.dart';
 import 'package:projet_pfe/admin/get_etranger.dart';
 import 'package:projet_pfe/admin/get_reserv.dart';
 import 'package:projet_pfe/admin/get_stagiaire.dart';
@@ -35,8 +40,8 @@ class AdminCustomPage extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: ListView(
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -137,6 +142,57 @@ class AdminCustomPage extends StatelessWidget {
                         );
                       },
                       child: const Text('creer une abscence '),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => MatierePage(),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                      child: const Text('Gérer les matiere'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EvaluationPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('gerer les evaluations'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SpecialitePage(),
+                          ),
+                        );
+                      },
+                      child: const Text('gerer  les spec'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => GroupPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('gerer les groupes'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SousAdminPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('gerer les admins'),
                     ),
                   ],
                 ),
