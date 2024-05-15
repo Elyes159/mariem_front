@@ -9,6 +9,7 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPageState extends State<GroupPage> {
   final TextEditingController numgrController = TextEditingController();
+  final TextEditingController specialiteIdController = TextEditingController();
   String? selectedSpecialiteId;
   late List<String> codeSpecs = [];
 
@@ -42,6 +43,35 @@ class _GroupPageState extends State<GroupPage> {
       });
     } else {
       print('Échec du chargement des groupes');
+    }
+  }
+
+  Future<void> deleteGroup(String numgr) async {
+    final response =
+        await http.delete(Uri.parse('$apiUrl/deletegroup/$numgr/'));
+
+    if (response.statusCode == 200) {
+      print('Groupe supprimé avec succès');
+      await getGroups(); // Re-fetch groups after deletion
+    } else {
+      print('Échec de la suppression du groupe');
+    }
+  }
+
+  Future<void> updateGroup(String numgr) async {
+    final response = await http.put(
+      Uri.parse('$apiUrl/updategroup/$numgr/'),
+      body: {
+        'specialite_id': selectedSpecialiteId!,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print('Groupe mis à jour avec succès');
+      Navigator.pop(context); // Fermer le dialogue après la mise à jour
+      await getGroups(); // Re-fetch groups after update
+    } else {
+      print('Échec de la mise à jour du groupe');
     }
   }
 
@@ -120,6 +150,63 @@ class _GroupPageState extends State<GroupPage> {
                             title: Text('Numéro: ${group['numgr']}'),
                             subtitle: Text(
                                 'ID de la spécialité: ${group['specialite_id']}'),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text('Modifier le groupe'),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            DropdownButton<String>(
+                                              value: selectedSpecialiteId,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedSpecialiteId = value;
+                                                });
+                                              },
+                                              items: codeSpecs.map((codeSpec) {
+                                                return DropdownMenuItem<String>(
+                                                  value: codeSpec,
+                                                  child: Text(codeSpec),
+                                                );
+                                              }).toList(),
+                                              hint: Text(
+                                                  'Sélectionner le code de spécialité'),
+                                            ),
+                                          ],
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Annuler'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              updateGroup(group['numgr']);
+                                            },
+                                            child: Text('Enregistrer'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    deleteGroup(group['numgr']);
+                                  },
+                                ),
+                              ],
+                            ),
                           );
                         },
                       ),
