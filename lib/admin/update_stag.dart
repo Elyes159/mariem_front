@@ -20,6 +20,7 @@ class _UpdateStagiaireState extends State<UpdateStagiaire> {
   TextEditingController gouvController = TextEditingController();
   TextEditingController codePostalController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController group = TextEditingController();
 
   @override
   void initState() {
@@ -79,6 +80,7 @@ class _UpdateStagiaireState extends State<UpdateStagiaire> {
         'gouv': gouvController.text,
         'code_postal': codePostalController.text,
         'email': emailController.text,
+        "code_group": group.text,
       },
     );
 
@@ -160,6 +162,10 @@ class _UpdateStagiaireState extends State<UpdateStagiaire> {
             TextField(
               controller: emailController,
               decoration: InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: group,
+              decoration: InputDecoration(labelText: 'group'),
             ),
             SizedBox(height: 20),
             ElevatedButton(

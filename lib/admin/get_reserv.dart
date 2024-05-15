@@ -10,6 +10,8 @@ class GetReservationPage extends StatefulWidget {
 class _GetReservationPageState extends State<GetReservationPage> {
   List<dynamic> reservationsEtranger = [];
   List<dynamic> reservationsStagiaire = [];
+  int totalReservationsEtranger = 0;
+  int totalReservationsStagiaire = 0;
 
   Future<void> fetchReservations() async {
     final response = await http
@@ -20,6 +22,9 @@ class _GetReservationPageState extends State<GetReservationPage> {
       setState(() {
         reservationsEtranger = data['reservations_etranger'];
         reservationsStagiaire = data['reservations_stagiaire'];
+        totalReservationsEtranger = data['nombre_total_reservations_etranger'];
+        totalReservationsStagiaire =
+            data['nombre_total_reservations_stagiaire'];
       });
     } else {
       throw Exception('Failed to load reservations');
@@ -63,7 +68,8 @@ class _GetReservationPageState extends State<GetReservationPage> {
       body: ListView(
         children: [
           ListTile(
-            title: Text('Réservations des étrangers'),
+            title:
+                Text('Réservations des étrangers ($totalReservationsEtranger)'),
           ),
           ListView.builder(
             shrinkWrap: true,
@@ -76,7 +82,7 @@ class _GetReservationPageState extends State<GetReservationPage> {
                     title:
                         Text('Temps: ${reservationsEtranger[index]['temps']}'),
                     subtitle: Text(
-                        'Étranger: ${reservationsEtranger[index]['etranger_id']}'),
+                        'Étranger: ${reservationsEtranger[index]['etranger']}'),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
@@ -90,7 +96,8 @@ class _GetReservationPageState extends State<GetReservationPage> {
             },
           ),
           ListTile(
-            title: Text('Réservations des stagiaires'),
+            title: Text(
+                'Réservations des stagiaires ($totalReservationsStagiaire)'),
           ),
           ListView.builder(
             shrinkWrap: true,
