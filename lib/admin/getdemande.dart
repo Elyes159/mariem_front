@@ -78,6 +78,7 @@ class _DemandesPageState extends State<DemandesPage> {
                     children: [
                       Text('CIN: ${demande["cin"]}'),
                       Text('email: ${demande["email"]}'),
+                      Text('cause: ${demande["cause"]}'),
                     ],
                   ),
                   // Ajoutez d'autres champs de demande à afficher ici

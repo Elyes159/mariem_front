@@ -15,12 +15,15 @@ class _MatierePageState extends State<MatierePage> {
   TextEditingController titreModuleController = TextEditingController();
   TextEditingController nbHeureController = TextEditingController();
   TextEditingController typeController = TextEditingController();
+  TextEditingController id = TextEditingController();
+
   String? selectedCodeSpec;
 
   @override
   void initState() {
     super.initState();
     getCodeSpecs();
+    getMatieres(); // Fetch matieres on init
   }
 
   Future<void> getCodeSpecs() async {
@@ -36,9 +39,22 @@ class _MatierePageState extends State<MatierePage> {
     }
   }
 
+  Future<void> getMatieres() async {
+    final response = await http.get(Uri.parse('$apiUrl/getmatieres/'));
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      setState(() {
+        matieres = responseData['matieres'];
+      });
+    } else {
+      print('Failed to load matieres');
+    }
+  }
+
   Future<void> createMatiere() async {
     final response =
         await http.post(Uri.parse('$apiUrl/creatematiere/'), body: {
+      'id': id.text,
       'module': moduleController.text,
       'titre_module': titreModuleController.text,
       'nb_heure': nbHeureController.text,
@@ -47,6 +63,7 @@ class _MatierePageState extends State<MatierePage> {
     });
     if (response.statusCode == 201) {
       print('Matiere created successfully');
+      getMatieres(); // Refresh the list of matieres
     } else {
       print('Failed to create matiere');
     }
@@ -57,6 +74,7 @@ class _MatierePageState extends State<MatierePage> {
         await http.delete(Uri.parse('$apiUrl/deletematiere/$matiereId/'));
     if (response.statusCode == 200) {
       print('Matiere deleted successfully');
+      getMatieres(); // Refresh the list of matieres
     } else {
       print('Failed to delete matiere');
     }
@@ -111,6 +129,10 @@ class _MatierePageState extends State<MatierePage> {
             padding: EdgeInsets.all(8.0),
             child: Column(
               children: [
+                TextField(
+                  controller: id,
+                  decoration: InputDecoration(labelText: 'id matiere'),
+                ),
                 TextField(
                   controller: moduleController,
                   decoration: InputDecoration(labelText: 'Module'),

@@ -81,8 +81,14 @@ class _GetReservationPageState extends State<GetReservationPage> {
                   ListTile(
                     title:
                         Text('Temps: ${reservationsEtranger[index]['temps']}'),
-                    subtitle: Text(
-                        'Étranger: ${reservationsEtranger[index]['etranger']}'),
+                    subtitle: Column(
+                      children: [
+                        Text(
+                            'Étranger: ${reservationsEtranger[index]['nombre_personne']}'),
+                        Text(
+                            'Étranger: ${reservationsEtranger[index]['etranger']}'),
+                      ],
+                    ),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {

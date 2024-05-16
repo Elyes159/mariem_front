@@ -112,44 +112,40 @@ class AdminCustomPage extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => UploadImagePage(),
                           ),
-                          (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text('creer un emploi'),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => DemandesPage(),
                           ),
-                          (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text('Voir les demandes'),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => CreateAbsencePage(),
                           ),
-                          (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text('creer une abscence '),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => MatierePage(),
                           ),
-                          (Route<dynamic> route) => false,
                         );
                       },
                       child: const Text('Gérer les matiere'),

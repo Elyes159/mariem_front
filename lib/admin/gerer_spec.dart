@@ -29,6 +29,12 @@ class _SpecialitePageState extends State<SpecialitePage> {
 
     if (response.statusCode == 201) {
       print('Specialité ajoutée avec succès');
+      // Clear the text fields after successful addition
+      codeController.clear();
+      nomController.clear();
+      typeController.clear();
+      // Refresh the list of specialités
+      await getSpecialites();
     } else {
       print('Échec de l\'ajout de la spécialité');
     }
@@ -47,6 +53,24 @@ class _SpecialitePageState extends State<SpecialitePage> {
     } else {
       print('Échec du chargement des spécialités');
     }
+  }
+
+  Future<void> deleteSpecialite(String codeSpec) async {
+    final response =
+        await http.delete(Uri.parse('$apiUrl/deletespec/$codeSpec/'));
+
+    if (response.statusCode == 200) {
+      print('Specialité supprimée avec succès');
+      await getSpecialites();
+    } else {
+      print('Échec de la suppression de la spécialité');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getSpecialites(); // Load specialités on init
   }
 
   @override
@@ -78,40 +102,29 @@ class _SpecialitePageState extends State<SpecialitePage> {
               child: Text('Ajouter une spécialité'),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await getSpecialites();
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Spécialités'),
-                    content: Container(
-                      width: double.maxFinite,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: specialites.length,
-                        itemBuilder: (context, index) {
-                          final specialite = specialites[index];
-                          return ListTile(
-                            title: Text('Code: ${specialite['code_spec']}'),
-                            subtitle: Text('Nom: ${specialite['nom_spec_ar']}'),
-                            trailing: Text('Type: ${specialite['type']}'),
-                          );
-                        },
-                      ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: specialites.length,
+                itemBuilder: (context, index) {
+                  final specialite = specialites[index];
+                  return ListTile(
+                    title: Text('Code: ${specialite['code_spec']}'),
+                    subtitle: Text('Nom: ${specialite['nom_spec_ar']}'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Type: ${specialite['type']}'),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            deleteSpecialite(specialite['code_spec']);
+                          },
+                        ),
+                      ],
                     ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('Fermer'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              child: Text('Obtenir les spécialités'),
+                  );
+                },
+              ),
             ),
           ],
         ),

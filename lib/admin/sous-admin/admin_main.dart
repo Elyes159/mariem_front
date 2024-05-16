@@ -7,6 +7,8 @@ import 'package:projet_pfe/admin/creer_emploi.dart';
 import 'package:projet_pfe/admin/gerer_eval.dart';
 import 'package:projet_pfe/admin/gerer_groups.dart';
 import 'package:projet_pfe/admin/gerer_matiere.dart';
+import 'package:projet_pfe/admin/gerer_sous_admin.dart';
+import 'package:projet_pfe/admin/gerer_spec.dart';
 import 'package:projet_pfe/admin/get_etranger.dart';
 import 'package:projet_pfe/admin/get_reserv.dart';
 import 'package:projet_pfe/admin/get_stagiaire.dart';
@@ -33,121 +35,156 @@ class SousAdminMain extends StatelessWidget {
             colors: [Colors.blue, Colors.green],
           ),
         ),
-        child: SingleChildScrollView(
-          child: ListView(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => StagiairePage()),
-                  );
-                },
-                child: const Text('Ajouter un stagiaire'),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const CreateEtrangerPage()),
-                  );
-                },
-                child: const Text('Ajouter un étranger'),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => GetAllStg()),
-                  );
-                },
-                child: const Text('Voir tous les stagiaires'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const EtrangerPage()),
-                  );
-                },
-                child: const Text('Voir tous les étrangers'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => GetReservationPage()),
-                  );
-                },
-                child: const Text('Voir toutes les réservations'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => Login(),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ListView(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => StagiairePage()),
+                        );
+                      },
+                      child: const Text('Ajouter un stagiaire'),
                     ),
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: const Text('Déconnexion'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => UploadImagePage(),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const CreateEtrangerPage()),
+                        );
+                      },
+                      child: const Text('Ajouter un etranger'),
                     ),
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: const Text('Créer un emploi'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => DemandesPage(),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => GetAllStg()),
+                        );
+                      },
+                      child: const Text('Voir tout les stagiiare'),
                     ),
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: const Text('Voir les demandes'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => CreateAbsencePage(),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const EtrangerPage()),
+                        );
+                      },
+                      child: const Text('Voir tout les etranger'),
                     ),
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: const Text('Créer une absence'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => MatierePage(),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => GetReservationPage()),
+                        );
+                      },
+                      child: const Text('Voir tout les réservation'),
                     ),
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: const Text('Gérer les matières'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => GroupPage(),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CreerSousAdminPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('creer des autres admin'),
                     ),
-                  );
-                },
-                child: const Text('Gérer les évaluations'),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => Login(),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                      child: const Text('Déconnexion'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => UploadImagePage(),
+                          ),
+                        );
+                      },
+                      child: const Text('creer un emploi'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => DemandesPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('Voir les demandes'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CreateAbsencePage(),
+                          ),
+                        );
+                      },
+                      child: const Text('creer une abscence '),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => MatierePage(),
+                          ),
+                        );
+                      },
+                      child: const Text('Gérer les matiere'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EvaluationPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('gerer les evaluations'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SpecialitePage(),
+                          ),
+                        );
+                      },
+                      child: const Text('gerer  les spec'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => GroupPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('gerer les groupes'),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
